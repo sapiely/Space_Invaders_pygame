@@ -317,15 +317,11 @@ bullets = []
 
 molodec = Player()
 textsurface = bigfont.render('', False, (255, 255, 255))
-
+pygame.mixer.music.play(-1)
 spawn(count)
 while run:
     clock.tick(FPS)
     keys = pygame.key.get_pressed()
-
-    if not music_play:
-        pygame.mixer.music.play(-1)
-        music_play = 1
     if not paused:
         for bullet in bullets:
             if win_h > bullet.y > 60:
@@ -385,13 +381,20 @@ while run:
             if event.key == pygame.K_f:
                 do_restart(molodec)
             elif event.key == pygame.K_p:
-                paused = True if not paused else False
+                if not paused:
+                    paused = True
+                    pygame.mixer.music.pause()
+                else:
+                    paused = False
+                    pygame.mixer.music.unpause()
+            elif event.key == pygame.K_m:
+                if not music_play:
+                    music_play = 1
+                    pygame.mixer.music.play(-1)
+                else:
+                    music_play = 0
+                    pygame.mixer.music.stop()
 
-        # elif event.type == pygame.K_m:          #\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\НЕ ПАШЕТ!!!!
-        #     if not music_play:
-        #         music_play = 1
-        #     else:
-        #         music_play = 0
     DrawWindow(score)
 
 pygame.quit()
