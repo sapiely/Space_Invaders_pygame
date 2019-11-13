@@ -1,4 +1,3 @@
-@@ -0,0 +1,386 @@
 import pygame
 import sys
 import random
@@ -38,6 +37,7 @@ run = True  # для главного окна
 vvod = True  # для окна ввода кол-ва врагов
 proigral = False
 restart = False
+paused = False
 
 textsurface = bigfont.render('', False, (255, 255, 255))
 textsurface_timer = bigfont.render('', False, (255, 255, 255))
@@ -106,6 +106,12 @@ def DrawWindow(chet):
         textsurface_timer = bigfont.render('Press F to Restart', False, (255, 255, 255))
         if keys[pygame.K_f]:
             do_restart(molodec)
+
+    if paused:
+        textsurface = bigfont.render(f'Пауза. Press P to continue', False, (255, 255, 255))
+        pygame.draw.rect(win, (255, 0, 200), (win_w / 2, 300, 400, 45))
+    else:
+        textsurface = bigfont.render('', False, (255, 255, 255))
     win.blit(textsurface, (win_w / 2, 300))
     win.blit(textsurface_timer, (win_w / 2, 350))
     win.blit(text_lvl, (5, 0))
@@ -194,8 +200,8 @@ class Enemy:
             win.blit(self.text_hp, ((self.x + 15), (self.y - 25)))
 
     def move(self):
-        global vragi
-        if self.alive:
+        global paused
+        if self.alive and not paused:
             if self.go == 'right':
                 self.x += self.speed
             else:
@@ -257,6 +263,7 @@ while vvod:
     text_name = bigfont.render('\\\ Donts_\'s Space Invaders', False, hsv2rgb(color / 100, 1, 1))
     color += 0.5
     textsurface = bigfont.render('Управление: A & D (Стрелки)   Прыжок: Space   Атака: E', False, (255, 255, 255))
+    textsurface2 = bigfont.render('Выход: ESC   Рестарт: F  Пауза: P', False, (255, 255, 255))
     for event in pygame.event.get():
         if event.type == pygame.QUIT or keys[pygame.K_ESCAPE]:
             vvod = False
@@ -295,6 +302,7 @@ while vvod:
                         text_error = bigfont.render('Чет ты перегнул', False, (255, 255, 255))
     win.blit(text_name, (500, 30))
     win.blit(textsurface, (250, 130))
+    win.blit(textsurface2, (250, 170))
     win.blit(text_vopros, (200, 450))
     win.blit(text_error, (200, 500))
     win.blit(text_about, (0, win_h - 30))
@@ -313,74 +321,77 @@ textsurface = bigfont.render('', False, (255, 255, 255))
 spawn(count)
 while run:
     clock.tick(FPS)
+    keys = pygame.key.get_pressed()
 
     if not music_play:
         pygame.mixer.music.play(-1)
         music_play = 1
-
-    for bullet in bullets:
-        if win_h > bullet.y > 60:
-            bullet.y -= bullet.vel
-            for item in vragi:
-                if item.x < bullet.x < (item.x + item.wight) \
-                        and item.y < bullet.y < (item.y + item.height):
-                    item.health -= molodec.dmg
-                    if item.health <= 0:
-                        score += level
-                        item.alive = False
-                        vragi.pop(vragi.index(item))
-                        if random.randint(0, 10) == random.randint(0, 10):
-                            bonusi.append(Bonus(item.x, item.y, bonus_png))
-                        elif random.randint(0, 100) == random.randint(0, 100):
-                            bonusi.append(Bonus(item.x, item.y, bonus_dmg_png))
-                        elif random.randint(0, 500) == random.randint(0, 500):
-                            bonusi.append(Bonus(item.x, item.y, bonus_speed_png))
-                    if bullet in bullets:
-                        bullets.pop(bullets.index(bullet))
-        elif bullet in bullets:
-            bullets.pop(bullets.index(bullet))
-
-    keys = pygame.key.get_pressed()
-    if keys[pygame.K_f]:
-        do_restart(molodec)
-    if keys[pygame.K_e]:
-        if len(bullets) < 10000:
-            for item in range(molodec.bullet_count):
-                bullets.append(Snaryad((round(molodec.x + int(item) * 2)), round(molodec.y + molodec.wight // 2), 2))
-
-    if (keys[pygame.K_LEFT] or keys[pygame.K_a]) and molodec.x > 5:
-        molodec.move('left')
-    elif (keys[pygame.K_RIGHT] or keys[pygame.K_d]) and molodec.x < win_w - molodec.wight - 5:
-        molodec.move('right')
-    else:
-        molodec.left = False
-        molodec.right = False
-        molodec.animCount = 0
-    if not molodec.isJump:
-        if keys[pygame.K_SPACE]:
-            molodec.isJump = True
-    else:
-        if molodec.jumpCount >= -10:
-            if molodec.jumpCount < 0:
-                molodec.y += (molodec.jumpCount ** 2) / 5
-            else:
-                molodec.y -= (molodec.jumpCount ** 2) / 5
-            molodec.jumpCount -= 0.5
+    if not paused:
+        for bullet in bullets:
+            if win_h > bullet.y > 60:
+                bullet.y -= bullet.vel
+                for item in vragi:
+                    if item.x < bullet.x < (item.x + item.wight) \
+                            and item.y < bullet.y < (item.y + item.height):
+                        item.health -= molodec.dmg
+                        if item.health <= 0:
+                            score += level
+                            item.alive = False
+                            vragi.pop(vragi.index(item))
+                            if random.randint(0, 10) == random.randint(0, 10):
+                                bonusi.append(Bonus(item.x, item.y, bonus_png))
+                            elif random.randint(0, 100) == random.randint(0, 100):
+                                bonusi.append(Bonus(item.x, item.y, bonus_dmg_png))
+                            elif random.randint(0, 500) == random.randint(0, 500):
+                                bonusi.append(Bonus(item.x, item.y, bonus_speed_png))
+                        if bullet in bullets:
+                            bullets.pop(bullets.index(bullet))
+            elif bullet in bullets:
+                bullets.pop(bullets.index(bullet))
+        if (keys[pygame.K_LEFT] or keys[pygame.K_a]) and molodec.x > 5:
+            molodec.move('left')
+        elif (keys[pygame.K_RIGHT] or keys[pygame.K_d]) and molodec.x < win_w - molodec.wight - 5:
+            molodec.move('right')
         else:
-            molodec.isJump = False
-            molodec.jumpCount = 10
+            molodec.left = False
+            molodec.right = False
+            molodec.animCount = 0
+        if not molodec.isJump:
+            if keys[pygame.K_SPACE]:
+                molodec.isJump = True
+        else:
+            if molodec.jumpCount >= -10:
+                if molodec.jumpCount < 0:
+                    molodec.y += (molodec.jumpCount ** 2) / 5
+                else:
+                    molodec.y -= (molodec.jumpCount ** 2) / 5
+                molodec.jumpCount -= 0.5
+            else:
+                molodec.isJump = False
+                molodec.jumpCount = 10
 
-    for item in vragi:
-        item.move()
+        for item in vragi:
+            item.move()
+
+        if keys[pygame.K_e]:
+            if len(bullets) < 10000:
+                for item in range(molodec.bullet_count):
+                    bullets.append(Snaryad((round(molodec.x + int(item) * 2)), round(molodec.y + molodec.wight // 2), 2))
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT or keys[pygame.K_ESCAPE]:
             run = False
-        elif event.type == pygame.K_m:
-            if not music_play:
-                music_play = 1
-            else:
-                music_play = 0
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_f:
+                do_restart(molodec)
+            elif event.key == pygame.K_p:
+                paused = True if not paused else False
+
+        # elif event.type == pygame.K_m:          #\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\НЕ ПАШЕТ!!!!
+        #     if not music_play:
+        #         music_play = 1
+        #     else:
+        #         music_play = 0
     DrawWindow(score)
 
 pygame.quit()
