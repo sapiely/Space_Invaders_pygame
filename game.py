@@ -61,7 +61,7 @@ def DrawWindow(chet):
         (255, 255, 255))
     if color == 360:
         color = 0
-    text_name = bigfont.render('\\\ Donts_\'s Space Invaders', False, hsv2rgb(color / 100, 1, 1))
+    text_name = bigfont.render(r"\\ Donts_'s Space Invaders", False, hsv2rgb(color / 100, 1, 1))
     color += 1
     if not len(vragi) and not proigral:
         if not start_ticks and level:
@@ -69,7 +69,7 @@ def DrawWindow(chet):
         seconds = (pygame.time.get_ticks() - start_ticks) / 1000
         textsurface = bigfont.render(f'КРОСАВА, ВСЕХ УБЫВ!!!', False, (255, 255, 255))
         textsurface_timer = bigfont.render(f'Время на отдохнуть: {round(4 - seconds, 3)}', False, (255, 255, 255))
-        if seconds > 4:
+        if seconds > 0.1:
             level += 1
             spawn(count)
             start_ticks = 0
@@ -78,12 +78,15 @@ def DrawWindow(chet):
 
     if molodec.animCount + 1 >= 30:
         molodec.animCount = 0
+
     if molodec.left:
         win.blit(molodec.walkLeft[molodec.animCount // 5], (molodec.x, molodec.y))
-        molodec.animCount += 1
+        if not paused:
+            molodec.animCount += 1
     elif molodec.right:
         win.blit(molodec.walkRight[molodec.animCount // 5], (molodec.x, molodec.y))
-        molodec.animCount += 1
+        if not paused:
+            molodec.animCount += 1
     else:
         win.blit(molodec.playerStand, (molodec.x, molodec.y))
 
@@ -257,10 +260,10 @@ while vvod:
     pygame.draw.rect(win, (0, 0, 0), (0, 0, win_w, win_h))
     keys = pygame.key.get_pressed()
     text_vopros = bigfont.render(f'Сколько (от 1 до 17) хочешь врагов?: {count}', False, (255, 255, 255))
-    text_about = myfont.render('© \\\ Donts_   2019', False, (255, 255, 255))
+    text_about = myfont.render(r'© \\ Donts_   2019', False, (255, 255, 255))
     if color == 100:
         color = 0.0
-    text_name = bigfont.render('\\\ Donts_\'s Space Invaders', False, hsv2rgb(color / 100, 1, 1))
+    text_name = bigfont.render(r"\\ Donts_'s Space Invaders", False, hsv2rgb(color / 100, 1, 1))
     color += 0.5
     textsurface = bigfont.render('Управление: A & D (Стрелки)   Прыжок: Space   Атака: E', False, (255, 255, 255))
     textsurface2 = bigfont.render('Выход: ESC   Рестарт: F  Пауза: P', False, (255, 255, 255))
@@ -372,7 +375,8 @@ while run:
         if keys[pygame.K_e]:
             if len(bullets) < 10000:
                 for item in range(molodec.bullet_count):
-                    bullets.append(Snaryad((round(molodec.x + int(item) * 2)), round(molodec.y + molodec.wight // 2), 2))
+                    bullets.append(
+                        Snaryad((round(molodec.x + int(item) * 2)), round(molodec.y + molodec.wight // 2), 2))
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT or keys[pygame.K_ESCAPE]:
