@@ -1,7 +1,9 @@
 import sys
 import random
 from colorsys import hsv_to_rgb
+
 from init import *
+from pause import pause
 
 
 class Entity:  # инициализации главного класса
@@ -40,38 +42,30 @@ class Enemy(Entity):
         self.height = 50
         self.speed = level % 20
         self.go = 'right'
-        self.health = int(level * e ** 0.5)*8
+        self.health = int(level * e ** 0.5) * 8
         self.hhealth = self.health  # неизменяемое здоровье
         self.text_hp = myfont.render(f'{self.health}', False, (255, 255, 255))
 
-    def living(self):
-        if self.alive:
-            self.text_hp = myfont.render(f'{self.health}', False, (255, 255, 255))
-            pygame.draw.rect(win, (0, 0, 0), (self.x, self.y - 25, self.wight, 25))
-            pygame.draw.rect(win, hsv2rgb((self.health * 100 / self.hhealth) / 333, 1, 1), (
-                self.x + 3, self.y - 23, (self.wight - 5) - (self.wight - (self.wight * self.health) / self.hhealth),
-                20))
-            win.blit(self.sprite, (self.x, self.y))
-            win.blit(self.text_hp, ((self.x + self.wight / 3), (self.y - 25)))
-
     def move(self):
         def switch():
-            if self.go == 'left':
-                self.go = 'right'
-            else:
+            if self.go == 'right':
                 self.go = 'left'
+            else:
+                self.go = 'right'
             self.y += 10
-        global paused
-        if self.alive and not paused:
+
+        if self.alive:
             if self.go == 'right':
                 self.x += self.speed
             else:
                 self.x -= self.speed
-            if self.x >= win_w - self.wight - 5 and self.type != "Boss":
+            if self.go == "lefty":
+                pass
+            elif self.x >= win_w - self.wight - 5:
                 switch()
             if self.x <= 4:
                 switch()
-            if self.y >= win_h - self.height - 5:
+            elif self.y >= win_h - self.height - 5:
                 self.alive = False
                 return False
         return True
@@ -79,14 +73,14 @@ class Enemy(Entity):
 
 class BossEnemy(Enemy):
     def __init__(self):
-        self.sprite = pygame.image.load(path.join('sprites/boss.png'))
+        self.sprite = enemy_boss_png
         self.type = "Boss"
         self.wight = 100
         self.height = 50
         self.x = win_w + 150
         self.y = 70
         self.speed = int(level * 0.7) % 20
-        self.go = "left"
+        self.go = "lefty"
         self.health = int(level * e ** 0.6) * 10
         self.hhealth = self.health
 
@@ -100,9 +94,6 @@ class Snaryad(Entity):
         self.radius = 2
         self.collor = (hsv2rgb(random.randint(0, 360) / 100, 1, 1))  # color
         self.vel = 20
-
-    def draw(self, window):
-        pygame.draw.circle(window, self.collor, (self.x, self.y), self.radius)
 
     def live(self):
         self.y -= self.vel
@@ -127,7 +118,7 @@ class Bonus(Entity):
 
     def move(self, igrok):
         self.y += self.speed
-        if igrok.x < self.x < igrok.x + igrok.height and igrok.y < self.y < igrok.y + igrok.wight:
+        if igrok.x < self.x < igrok.x + igrok.wight and igrok.y < self.y < igrok.y + igrok.height:
             self.alive = False
             self.check(igrok)
 
@@ -160,7 +151,31 @@ def hsv2rgb(h, s, v):
     return tuple(round(i * 255) for i in hsv_to_rgb(h, s, v))
 
 
-def drawwindow(score):
+def do_restart(igrok):
+    global proigral, level, textsurface, textsurface_timer, score
+    score = proigral = level = 0
+    igrok.bullet_count = igrok.dmg = 1
+    textsurface = textsurface_timer = emptytext
+    igrok.speed = 5
+    igrok.health = 100
+    igrok.x = 50
+    bullets.clear()
+    vragi.clear()
+
+
+
+def spawn(chislo):
+    global vragi, level, bosslvl
+    level += 1
+    bosslvl = True if level % 5 == 0 else False
+    if not bosslvl:
+        for i in range(int(chislo)):
+            vragi.append(Enemy(i))
+    else:
+        vragi.append(BossEnemy())
+
+
+def drawwindow(score):  # прорисовка графики
     global start_ticks, proigral, level, color
     textsurface_timer = text_score = textsurface = emptytext
     win.blit(bg, (0, 0))
@@ -187,14 +202,18 @@ def drawwindow(score):
     if not proigral:
         win.blit(molodec.player, (molodec.x, molodec.y))
 
-    for bullet in bullets:
-        bullet.draw(win)
     for item in vragi:
-        item.living()
-        if not item.move() or molodec.health <= 0:
-            vragi.clear()
-            bullets.clear()
-            proigral = True
+        if item.alive:
+            item.text_hp = myfont.render(f'{item.health}', False, (255, 255, 255))
+            pygame.draw.rect(win, (0, 0, 0), (item.x, item.y - 25, item.wight, 25))
+            pygame.draw.rect(win, hsv2rgb((item.health * 100 / item.hhealth) / 333, 1, 1), (
+                item.x + 3, item.y - 23, (item.wight - 5) - (item.wight - (item.wight * item.health) / item.hhealth),
+                20))
+            win.blit(item.sprite, (item.x, item.y))
+            win.blit(item.text_hp, ((item.x + item.wight / 3), (item.y - 25)))
+
+    for bullet in bullets:
+        pygame.draw.circle(win, bullet.collor, (bullet.x, bullet.y), bullet.radius)
 
     if len(bonusi):
         for item in bonusi:
@@ -205,13 +224,6 @@ def drawwindow(score):
     if proigral:
         textsurface = bigfont.render('ТИ ПРОЕГРАФ', False, (255, 255, 255))
         textsurface_timer = bigfont.render('Press F to Restart', False, (255, 255, 255))
-
-        if keys[pygame.K_f]:
-            do_restart(molodec)
-
-    if paused and not proigral:
-        textsurface = bigfont.render(f'Пауза. Press P to continue', False, (255, 255, 255))
-        pygame.draw.rect(win, (255, 0, 200), (win_w / 2, 300, 400, 45))
     elif not proigral and len(vragi):
         textsurface = bigfont.render('', False, (255, 255, 255))
     win.blit(textsurface, (win_w / 2, 300))
@@ -222,29 +234,8 @@ def drawwindow(score):
     pygame.display.update()
 
 
-def do_restart(igrok):
-    global proigral, level, textsurface, textsurface_timer, score
-    score = proigral = level = 0
-    igrok.bullet_count = igrok.dmg = 1
-    textsurface = textsurface_timer = emptytext
-    igrok.speed = 5
-    igrok.health = 100
-    bullets.clear()
-    vragi.clear()
-
-
-def spawn(chislo):
-    global vragi, level, bosslvl
-    level += 1
-    bosslvl = True if level % 5 == 0 else False
-    if not bosslvl:
-        for i in range(int(chislo)):
-            vragi.append(Enemy(i))
-    else:
-        vragi.append(BossEnemy())
-
-
 if __name__ == "__main__":
+    pygame.mouse.set_visible(False)
     color = score = start_ticks = 0  # переменная для таймера
     level = 0
     bosslvl = False
@@ -268,7 +259,7 @@ if __name__ == "__main__":
                     for item in vragi:
                         if item.x < bullet.x < (item.x + item.wight) \
                                 and item.y < bullet.y < (item.y + item.height):
-                            item.health -= molodec.dmg
+                            item.health -= molodec.dmg * molodec.bullet_count
                             if item.health <= 0:
                                 if item.type == "Enemy":
                                     score += level
@@ -301,37 +292,27 @@ if __name__ == "__main__":
             for item in vragi:
                 item.move()
 
-            if keys[pygame.K_e]:
-                if len(bullets) < 10000:
-                    for item in range(molodec.bullet_count):
-                        bullets.append(
-                            Snaryad((round(molodec.x + int(item * 0.3))), round(molodec.y + molodec.wight // 2)))
-
-            if len(vragi) != 0 and bosslvl and random.randint(0, 5) == 1:
-                bullets.append(EnemySnaryad(vragi[0].x + 50, vragi[0].y + 53))
+            if keys[pygame.K_e] and not proigral:
+                bullets.append(Snaryad((molodec.x + molodec.wight // 2), molodec.y))
+            for vrag in vragi:
+                if len(vragi) != 0 and random.randint(0, 25) == random.randint(0, 25):
+                    bullets.append(EnemySnaryad(vrag.x + 50, vrag.y + 53))
 
         for event in pygame.event.get():
-            if event.type == pygame.QUIT or keys[pygame.K_ESCAPE]:
-                run = False
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_f:
                     do_restart(molodec)
-                elif event.key == pygame.K_p:
-                    if not paused:
-                        paused = True
-                        pygame.mixer.music.pause()
-                    else:
-                        paused = False
-                        pygame.mixer.music.unpause()
-                elif event.key == pygame.K_m:
-                    if not music_play:
-                        music_play = True
-                        pygame.mixer.music.play(-1)
-                    else:
-                        music_play = False
-                        pygame.mixer.music.stop()
+                elif event.key == pygame.K_ESCAPE:
+                    pygame.mixer.pause()
+                    pause()
                 elif event.key == pygame.K_KP_PLUS:
                     level += 1
+        for item in vragi:
+            # if not item.move() or molodec.health <= 0:
+            if molodec.health <= 0:
+                vragi.clear()
+                bullets.clear()
+                proigral = True
         drawwindow(score)
 
     pygame.quit()
