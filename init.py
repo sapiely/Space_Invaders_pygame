@@ -8,9 +8,10 @@ if __name__ == "__main__":
 import pygame
 from os import path
 from math import e
+
 pygame.init()
 pygame.font.init()
-win = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+win = pygame.display.set_mode((1366, 768), pygame.FULLSCREEN)
 # инициализируем окошко
 ico = pygame.image.load(path.join('sprites/space2.png'))
 pygame.display.set_icon(ico)  # ярлык окошка
@@ -32,4 +33,3 @@ bonus_dmg_png = pygame.image.load(path.join('sprites/diam_dmg.png'))
 bonus_speed_png = pygame.image.load(path.join('sprites/diam_speed.png'))
 bonus_hp_png = pygame.image.load(path.join('sprites/diam_hp.png'))
 pygame.mixer.music.load(path.join('sprites/STS.mp3'))
-

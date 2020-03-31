@@ -1,9 +1,8 @@
 import sys
 import random
 from colorsys import hsv_to_rgb
-
 from init import *
-from pause import pause
+from pause import *
 
 
 class Entity:  # инициализации главного класса
@@ -163,7 +162,6 @@ def do_restart(igrok):
     vragi.clear()
 
 
-
 def spawn(chislo):
     global vragi, level, bosslvl
     level += 1
@@ -181,8 +179,8 @@ def drawwindow(score):  # прорисовка графики
     win.blit(bg, (0, 0))
     pygame.draw.rect(win, (0, 0, 0), (0, 0, win_w, 45))
     text_lvl = bigfont.render(
-        f'level: {level}  score: {score}  Health: {molodec.health}  bullets: {molodec.bullet_count}   dmg:{molodec.dmg} '
-        f' speed: {molodec.speed}', False, (255, 255, 255))
+        f'level: {level}  score: {score}  Health: {molodec.health}  bullets: {molodec.bullet_count}   dmg:{molodec.dmg}'
+        f'   speed: {molodec.speed}', False, (255, 255, 255))
     if color == 360:
         color = 0
     text_name = bigfont.render(r"\\ Donts_'s Space Invaders", False, hsv2rgb(color / 100, 1, 1))
@@ -308,7 +306,6 @@ if __name__ == "__main__":
                 elif event.key == pygame.K_KP_PLUS:
                     level += 1
         for item in vragi:
-            # if not item.move() or molodec.health <= 0:
             if molodec.health <= 0:
                 vragi.clear()
                 bullets.clear()

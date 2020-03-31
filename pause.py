@@ -1,6 +1,7 @@
 import pygame
 import pygameMenu
-from init import *
+from init import win, win_h, win_w
+volume = 100
 
 
 def pause():
@@ -8,16 +9,16 @@ def pause():
     COLOR_WHITE = (255, 255, 255)
     MENU_BACKGROUND_COLOR = (123, 160, 91)
     WINDOW_SIZE = (win_w, win_h)
-
     def Pass():
         pass
-
+    font1 = 'sprites/bebas.ttf'
+    font2 = 'sprites/8bit.ttf'
     about_menu = pygameMenu.TextMenu(surface=win, bgfun=Pass,
                                      color_selected=COLOR_WHITE,
-                                     font=pygameMenu.font.FONT_BEBAS,
+                                     font=font1,
                                      font_color=COLOR_BLACK,
                                      font_size_title=30,
-                                     font_title=pygameMenu.font.FONT_8BIT,
+                                     font_title=font2,
                                      menu_color=MENU_BACKGROUND_COLOR,
                                      menu_color_title=COLOR_WHITE,
                                      menu_height=int(WINDOW_SIZE[1] * 0.5),
@@ -39,10 +40,11 @@ def pause():
     about_menu.add_option('Return to menu', pygameMenu.events.BACK)
     main_menu = pygameMenu.Menu(surface=win, bgfun=Pass,
                                 color_selected=COLOR_WHITE,
-                                font=pygameMenu.font.FONT_BEBAS,
+                                font=font1,
                                 font_color=COLOR_BLACK,
                                 font_size=30,
                                 menu_alpha=50,
+                                font_title=font1,
                                 menu_color=MENU_BACKGROUND_COLOR,
                                 menu_height=int(WINDOW_SIZE[1] * 0.5),
                                 menu_width=int(WINDOW_SIZE[0] * 0.3),
@@ -56,14 +58,16 @@ def pause():
                                 )
 
     def music_selector(_, value):
-        pygame.mixer.music.set_volume(value/100)
+        global volume
+        volume = value
+        pygame.mixer.music.set_volume(volume/100)
 
     help_menu = pygameMenu.TextMenu(surface=win, bgfun=Pass,
                                     color_selected=COLOR_WHITE,
-                                    font=pygameMenu.font.FONT_BEBAS,
+                                    font=font1,
                                     font_color=COLOR_BLACK,
                                     font_size_title=30,
-                                    font_title=pygameMenu.font.FONT_8BIT,
+                                    font_title=font2,
                                     menu_color=MENU_BACKGROUND_COLOR,
                                     menu_color_title=COLOR_WHITE,
                                     menu_height=int(WINDOW_SIZE[1] * 0.5),
@@ -82,14 +86,9 @@ def pause():
     help_menu.add_line("[E]  to  fire")
 
     help_menu.add_option('Return to menu', pygameMenu.events.BACK)
-
     main_menu.add_option('Play', main_menu.disable)
-    main_menu.add_selector("Music: ", [(str(x), x) for x in range(0, 101, 10)], default=10, onchange=music_selector)
+    main_menu.add_selector("Music: ", [(str(x), x) for x in range(0, 101, 10)], default=volume//10, onchange=music_selector)
     main_menu.add_option('Help', help_menu)
     main_menu.add_option('About', about_menu)
     main_menu.add_option('Quit', pygameMenu.events.EXIT)
     main_menu.mainloop(pygame.event.get())
-
-
-if __name__ == "__main__":
-    pass
