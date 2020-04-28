@@ -234,6 +234,7 @@ def drawwindow(score):  # прорисовка графики
 
 if __name__ == "__main__":
     pygame.mouse.set_visible(False)
+    pause()
     color = score = start_ticks = 0  # переменная для таймера
     level = 0
     bosslvl = False
@@ -293,8 +294,8 @@ if __name__ == "__main__":
             if keys[pygame.K_e] and not proigral:
                 bullets.append(Snaryad((molodec.x + molodec.wight // 2), molodec.y))
             for vrag in vragi:
-                if len(vragi) != 0 and random.randint(0, 25) == random.randint(0, 25):
-                    bullets.append(EnemySnaryad(vrag.x + 50, vrag.y + 53))
+                if len(vragi) != 0 and random.randint(0, 40) == random.randint(0, 35):
+                    bullets.append(EnemySnaryad(vrag.x + vrag.wight//2, vrag.y + 53))
 
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:

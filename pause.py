@@ -1,6 +1,7 @@
 import pygame
 import pygameMenu
-from init import win, win_h, win_w
+from game import hsv2rgb
+from init import *
 volume = 100
 
 
@@ -44,13 +45,14 @@ def pause():
                                 font_color=COLOR_BLACK,
                                 font_size=30,
                                 menu_alpha=50,
-                                font_title=font1,
+                                font_title=font2,
+                                font_size_title=25,
                                 menu_color=MENU_BACKGROUND_COLOR,
                                 menu_height=int(WINDOW_SIZE[1] * 0.5),
                                 menu_width=int(WINDOW_SIZE[0] * 0.3),
                                 onclose=pygameMenu.events.DISABLE_CLOSE,
                                 option_shadow=False,
-                                title='MAIN MENU',
+                                title='Space Invaders',
                                 window_height=WINDOW_SIZE[1],
                                 window_width=WINDOW_SIZE[0],
                                 mouse_enabled=False,
@@ -69,6 +71,7 @@ def pause():
                                     font_size_title=30,
                                     font_title=font2,
                                     menu_color=MENU_BACKGROUND_COLOR,
+                                    menu_alpha=0,
                                     menu_color_title=COLOR_WHITE,
                                     menu_height=int(WINDOW_SIZE[1] * 0.5),
                                     menu_width=int(WINDOW_SIZE[0] * 0.3),
