@@ -1,8 +1,7 @@
-import sys
 import random
 from colorsys import hsv_to_rgb
-from init import *
 from pause import *
+from math import e
 
 
 class Entity:  # инициализации главного класса
@@ -220,8 +219,8 @@ def drawwindow(score):  # прорисовка графики
                 item.move(molodec)
 
     if proigral:
-        textsurface = bigfont.render('ТИ ПРОЕГРАФ', False, (255, 255, 255))
-        textsurface_timer = bigfont.render('Press F to Restart', False, (255, 255, 255))
+        dead(score)
+        do_restart(molodec)
     elif not proigral and len(vragi):
         textsurface = bigfont.render('', False, (255, 255, 255))
     win.blit(textsurface, (win_w / 2, 300))

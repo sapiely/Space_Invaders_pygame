@@ -7,7 +7,6 @@ if __name__ == "__main__":
 
 import pygame
 from os import path
-from math import e
 
 pygame.init()
 pygame.font.init()
