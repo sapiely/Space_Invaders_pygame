@@ -125,6 +125,7 @@ def pause():
                                      )
     help_menu.add_line("[A]+[D]  or  [Arrows]  to  walk")
     help_menu.add_line("[E]  to  fire")
+    help_menu.add_line("[F]  to  restart")
 
     help_menu.add_option('Return to menu', pygameMenu.events.BACK)
     main_menu.add_option('Play', main_menu.disable)
