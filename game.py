@@ -188,8 +188,8 @@ def drawwindow(score):  # прорисовка графики
         if not start_ticks and level:
             start_ticks = pygame.time.get_ticks()
         seconds = (pygame.time.get_ticks() - start_ticks) / 1000
-        textsurface = bigfont.render(f'КРОСАВА, ВСЕХ УБЫВ!!!', False, (255, 255, 255))
-        textsurface_timer = bigfont.render(f'Время на отдохнуть: {round(4 - seconds, 3)}', False, (255, 255, 255))
+        textsurface = bigfont.render(f'Wave comleted', False, (255, 255, 255))
+        textsurface_timer = bigfont.render(f'Next wave in: {round(4 - seconds, 3)}', False, (255, 255, 255))
         if seconds > 4:
             spawn(17)
             start_ticks = 0
