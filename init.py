@@ -16,7 +16,7 @@ win = pygame.display.set_mode((1366, 768), pygame.WINDOWMOVED)
 # инициализируем окошко
 ico = pygame.image.load(path.join('resources/space2.png'))
 pygame.display.set_icon(ico)  # ярлык окошка
-pygame.display.set_caption("Space Ivaders")  # название окошка
+pygame.display.set_caption("DDontS's Space Ivaders")  # название окошка
 pygame.time.Clock().tick(60)  # FPS
 win_w = pygame.display.Info().current_w  # определение ширины экрана
 win_h = pygame.display.Info().current_h  # определение высоты экрана

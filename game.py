@@ -91,9 +91,9 @@ def drawwindow(score):  # прорисовка графики
     stats_text = bigfont.render(f'bullets: {molodec.bullet_count}   dmg:{molodec.dmg}'
         f'   speed: {molodec.speed}', False, output_color)
     if not nitemare_text:
-        text_name = bigfont.render(r"DDontS69's Space Invaders", False, (255,0,255))
+        text_name = bigfont.render(r"DDontS's Space Invaders", False, (255,0,255))
     else:
-        text_name = bigfont.render(r"DDontS69's Space Invaders", False, hsv2rgb(color / 100, 1, 1))
+        text_name = bigfont.render(r"DDontS's Space Invaders", False, hsv2rgb(color / 100, 1, 1))
     color += 1
     key_color += 0.01
     achievement_color += 0.1

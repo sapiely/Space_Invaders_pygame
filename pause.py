@@ -74,8 +74,8 @@ def pause():
                                      mouse_visible=False
                                      )
 
-    about_menu.add_line('Donts\'s     Space        Invaders')
-    about_menu.add_line(r'2020-2023   \\ Donts_')
+    about_menu.add_line('DDontS\'s     Space        Invaders')
+    about_menu.add_line(r'2020-2023   DDontS')
     about_menu.add_line(pygameMenu.locals.TEXT_NEWLINE)
     about_menu.add_option('Return to menu', pygameMenu.events.BACK)
     main_menu = pygameMenu.Menu(surface=win, bgfun=Pass,
