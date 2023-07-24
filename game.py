@@ -70,7 +70,7 @@ def spawn(chislo = None):
 
 
 def drawwindow(score):  # прорисовка графики
-    global start_ticks, proigral, level, color, bosslvl, nitemare_text, sound_repeat, key_color, achievement
+    global start_ticks, proigral, level, color, bosslvl, nitemare_text, sound_repeat, key_color, achievement, achievement_color
     textsurface_timer = text_score = textsurface = emptytext
     win.blit(bg, (0, 0))
     pygame.draw.rect(win, (0, 0, 0), (0, 0, win_w, 45))
@@ -79,11 +79,12 @@ def drawwindow(score):  # прорисовка графики
         color = 0
     if key_color == 360:
         key_color = 0
+    if achievement_color == 360:
+        achievement_color = 0
     if nitemare_text:
         output_color = hsv2rgb(color / 100, 1, 1)
     else:
         output_color = (255, 255, 255)
-
 
     text_lvl = bigfont.render(f'level: {level}  score: {score}', False, output_color)
     health_text = bigfont.render(f'Health: {molodec.health}', False, (255, 0, 0) if not nitemare_text else output_color)
@@ -95,6 +96,7 @@ def drawwindow(score):  # прорисовка графики
         text_name = bigfont.render(r"DDontS69's Space Invaders", False, hsv2rgb(color / 100, 1, 1))
     color += 1
     key_color += 0.01
+    achievement_color += 0.1
 
     if not len(vragi) and not proigral and not paused and not is_final:
         if not start_ticks and level:
@@ -121,11 +123,13 @@ def drawwindow(score):  # прорисовка графики
             else:
                 hp_color = (255, 255, 255)
             item.text_hp = myfont.render(f'{item.health}', False, hp_color)
+            item.text_hp_shadow = myfont_bigger.render(f'{item.health}', False, (0,0,0))
             pygame.draw.rect(win, (0, 0, 0), (item.x, item.y - 25, item.wight, 25))
             pygame.draw.rect(win, hsv2rgb((item.health * 100 / item.hhealth) / 333, 1, 1), (
                 item.x + 3, item.y - 23, (item.wight - 5) - (item.wight - (item.wight * item.health) / item.hhealth),
                 20))
             win.blit(item.sprite, (item.x, item.y))
+            win.blit(item.text_hp_shadow, ((item.x + item.wight / 3), (item.y - 25)))
             win.blit(item.text_hp, ((item.x + item.wight / 3), (item.y - 25)))
 
     for bullet in bullets:
@@ -138,8 +142,12 @@ def drawwindow(score):  # прорисовка графики
     try:
         if achievement:
             pygame.draw.rect(win, (100, 100, 100),  (achievement.x-achievement.wight, achievement.y, achievement.wight, achievement.height))
+            if is_final:
+                achievement_text_color = hsv2rgb(achievement_color / 100, 1, 1)
+            else:
+                achievement_text_color = (255, 255, 255)
             achievement_text = bigfont.render(achievement.text, False,
-                          (255, 255, 255))
+                          achievement_text_color)
             win.blit(achievement_text, (achievement.x-achievement.wight, achievement.y))
     except:
         pass
@@ -167,9 +175,6 @@ def drawwindow(score):  # прорисовка графики
     win.blit(text_name, (win_w - 410, 0))
 
     if current_text_list and show_text_box and current_text < len(current_text_list):
-        # if sound_repeat != current_text:
-        #     sound_repeat = current_text
-        #     play_sound(len(current_text_list[current_text][1]))
         pygame.draw.rect(win, (50, 50, 50),
                          (40, win_h - 250, win_w-80, 200))
         sayer_name = bigfont.render(f'{current_text_list[current_text]["sayer"]}', False,
@@ -184,17 +189,11 @@ def drawwindow(score):  # прорисовка графики
     if show_game_key:
         pygame.draw.rect(win, (50, 50, 50),(40, win_h - 450, win_w - 80, 200))
         help_text = myfont.render(f'Нажми {5-final_exit} раз пробел, чтобы выйти', False, (255, 255, 255))
-        # instuction_text = myfont.render(f'Передай этот код отправителю :)', False, (255, 255, 255))
         key_text = giantfont.render(f'{GAME_KEY}', False, hsv2rgb(key_color / 100, 1, 1))
         win.blit(key_text, (120, win_h - 440))
         win.blit(help_text, (1000, win_h - 280))
-        # win.blit(instuction_text, (150, win_h - 280))
 
     pygame.display.update()
-
-# def play_sound(size = None):
-#     pygame.mixer.Channel(0).play(pygame.mixer.Sound('sprites/text_blip.ogg'), loops=int(size/2))
-
 
 
 def boss_level():

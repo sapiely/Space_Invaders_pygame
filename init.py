@@ -21,6 +21,7 @@ pygame.time.Clock().tick(60)  # FPS
 win_w = pygame.display.Info().current_w  # определение ширины экрана
 win_h = pygame.display.Info().current_h  # определение высоты экрана
 myfont = pygame.font.SysFont('Comic Sans MS', 15)  # малый шрифт (для хп)
+myfont_bigger = pygame.font.SysFont('Comic Sans MS', 17)  # малый шрифт (для хп)
 bigfont = pygame.font.SysFont('Comic Sans MS', 30)  # больший шрифт (для всего)
 giantfont = pygame.font.SysFont('Comic Sans MS', 100)  # больший шрифт (для всего)
 emptytext = bigfont.render(f'', False, (255, 255, 255))  # инициализация пустого текстового поля
@@ -38,7 +39,7 @@ bonus_hp_png = pygame.image.load(path.join('resources/diam_hp.png'))
 pygame.mixer.music.load(path.join('resources/STS.mp3'))
 
 
-color = key_color = score = start_ticks = 0  # переменная для таймера
+color = key_color = achievement_color = score = start_ticks = 0  # переменная для таймера
 level = 1
 bosslvl = False
 run = True
