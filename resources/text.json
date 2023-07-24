@@ -1,0 +1,220 @@
+{
+  "data": {
+
+    "READ_ME": {
+      "readme1!!!!!": "Editable text for ingame lore"
+    },
+
+
+
+    "boss_texts": [
+      {
+        "sayer": "Example sayer",
+        "text": "Example text",
+        "speaker_color": "(255, 0, 0)",
+        "text_color": "(255, 255, 255)"
+      },
+      {
+        "sayer": "Example sayer",
+        "text": "Example text",
+        "speaker_color": "(255, 0, 0)",
+        "text_color": "(255, 255, 255)"
+      },
+      {
+        "sayer": "Example sayer",
+        "text": "Example text",
+        "speaker_color": "(255, 0, 0)",
+        "text_color": "(255, 255, 255)"
+      },
+      {
+        "sayer": "Example sayer",
+        "text": "Example text",
+        "speaker_color": "(255, 0, 0)",
+        "text_color": "(255, 255, 255)"
+      },
+      {
+        "sayer": "Example sayer",
+        "text": "Example text",
+        "speaker_color": "(255, 0, 0)",
+        "text_color": "(255, 255, 255)"
+      }
+    ],
+
+
+
+
+
+    "donts_texts": [
+      {
+        "sayer": "Example sayer",
+        "text": "Example text",
+        "speaker_color": "(255, 0, 255)",
+        "text_color": "(255, 255, 255)"
+      },
+      {
+        "sayer": "Example sayer",
+        "text": "Example text",
+        "speaker_color": "(255, 0, 255)",
+        "text_color": "(255, 255, 255)"
+      },
+      {
+        "sayer": "Example sayer",
+        "text": "Example text",
+        "speaker_color": "(255, 0, 255)",
+        "text_color": "(255, 255, 255)"
+      },
+      {
+        "sayer": "Example sayer",
+        "text": "Example text",
+        "speaker_color": "(255, 0, 255)",
+        "text_color": "(255, 255, 255)"
+      },
+      {
+        "sayer": "Example sayer",
+        "text": "Example text",
+        "speaker_color": "(255, 0, 255)",
+        "text_color": "(255, 255, 255)"
+      },
+      {
+        "sayer": "Example sayer",
+        "text": "Example text",
+        "speaker_color": "(255, 0, 255)",
+        "text_color": "(255, 255, 255)"
+      },
+      {
+        "sayer": "Example sayer",
+        "text": "Example text",
+        "speaker_color": "(255, 0, 255)",
+        "text_color": "(255, 255, 255)"
+      },
+      {
+        "sayer": "Example sayer",
+        "text": "Example text",
+        "speaker_color": "(255, 0, 255)",
+        "text_color": "(255, 255, 255)"
+      },
+      {
+        "sayer": "Example sayer",
+        "text": "Example text",
+        "speaker_color": "(255, 0, 255)",
+        "text_color": "(255, 255, 255)"
+      },
+      {
+        "sayer": "Example sayer",
+        "text": "Example text",
+        "speaker_color": "(255, 0, 255)",
+        "text_color": "(255, 255, 255)"
+      },
+      {
+        "sayer": "Example sayer",
+        "text": "Example text",
+        "speaker_color": "(255, 0, 255)",
+        "text_color": "(255, 255, 255)"
+      },
+      {
+        "sayer": "Example sayer",
+        "text": "Example text",
+        "speaker_color": "(255, 0, 255)",
+        "text_color": "(255, 255, 255)"
+      },
+      {
+        "sayer": "Example sayer",
+        "text": "Example text",
+        "speaker_color": "(255, 0, 255)",
+        "text_color": "(255, 255, 255)"
+      },
+      {
+        "sayer": "Example sayer",
+        "text": "Example text",
+        "speaker_color": "(0, 0, 255)",
+        "text_color": "(255, 255, 255)"
+      },
+      {
+        "sayer": "Example sayer",
+        "text": "Example text",
+        "speaker_color": "(255, 0, 255)",
+        "text_color": "(255, 255, 255)"
+      },
+      {
+        "sayer": "Example sayer",
+        "text": "Example text",
+        "speaker_color": "(255, 0, 255)",
+        "text_color": "(255, 255, 255)"
+      }
+    ],
+
+
+
+
+
+
+    "final_texts": [
+      {
+        "sayer": "Example sayer",
+        "text": "Example text",
+        "speaker_color": "(255, 0, 255)",
+        "text_color": "(255, 255, 255)"
+      },
+      {
+        "sayer": "Example sayer",
+        "text": "Example text",
+        "speaker_color": "(255, 0, 255)",
+        "text_color": "(255, 255, 255)"
+      },
+      {
+        "sayer": "Example sayer",
+        "text": "Example text",
+        "speaker_color": "(255, 0, 255)",
+        "text_color": "(255, 255, 255)"
+      },
+      {
+        "sayer": "Example sayer",
+        "text": "Example text",
+        "speaker_color": "(255, 0, 255)",
+        "text_color": "(255, 255, 255)"
+      },
+      {
+        "sayer": "Example sayer",
+        "text": "Example text",
+        "speaker_color": "(255, 0, 255)",
+        "text_color": "(255, 255, 255)"
+      },
+      {
+        "sayer": "Example sayer",
+        "text": "Example text",
+        "speaker_color": "(255, 0, 255)",
+        "text_color": "(255, 255, 255)"
+      },
+      {
+        "sayer": "Example sayer",
+        "text": "Example text",
+        "speaker_color": "(255, 0, 255)",
+        "text_color": "(255, 255, 255)"
+      },
+      {
+        "sayer": "Example sayer",
+        "text": "Example text",
+        "speaker_color": "(0, 0, 255)",
+        "text_color": "(255, 255, 255)"
+      },
+      {
+        "sayer": "Example sayer",
+        "text": "Example text",
+        "speaker_color": "(0, 0, 255)",
+        "text_color": "(255, 255, 255)"
+      },
+      {
+        "sayer": "Example sayer",
+        "text": "Example text",
+        "speaker_color": "(255, 0, 255)",
+        "text_color": "(255, 255, 255)"
+      },
+      {
+        "sayer": "Example sayer",
+        "text": "Example text",
+        "speaker_color": "(255, 0, 255)",
+        "text_color": "(255, 255, 255)"
+      }
+    ]
+  }
+}

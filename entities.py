@@ -1,6 +1,5 @@
 import random
 from datetime import timedelta
-from math import e
 
 from init import *
 from utils import hsv2rgb
@@ -53,7 +52,7 @@ class Player(Entity):
         self.speed = 1
         self.dmg = 1
         self.bullet_count = 1
-        self.health = 100
+        self.health = 50
         self.player = player_png
 
 class Shield(Player):
@@ -74,7 +73,7 @@ class Shield(Player):
 class Enemy(Entity):
     alive = True
 
-    def __init__(self, poryadoc):
+    def __init__(self, poryadoc, health=1):
         global level
         self.sprite = enemy_png
         self.type = "Enemy"
@@ -84,7 +83,7 @@ class Enemy(Entity):
         self.height = 50
         self.speed = level % 50 / 10
         self.go = 'right'
-        self.health = int(level) * 2
+        self.health = health
         self.hhealth = self.health  # неизменяемое здоровье
         self.text_hp = myfont.render(f'{self.health}', False, (255, 255, 255))
 

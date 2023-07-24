@@ -1,4 +1,7 @@
 import random
+import json
+from math import e
+from ast import literal_eval
 from datetime import timedelta
 
 
@@ -25,50 +28,20 @@ current_text = 0
 shieled_obj = None
 nitemare_text = False
 is_final = False
+donts_defence = False
 show_game_key = False
 final_exit = False
 sound_repeat = -1
 achievement = None
 
-GAME_KEY = 'HEROINE-AND-DONTS'
-boss_texts = [
-    ('Ебака3000', 'Слишком просто, не так ли?!', (255, 0, 0)),
-    ('Ебака3000', 'Я ЗАСТАВЛЮ ТЕБЯ ПОПОТЕТЬ!!!', (255, 0, 0)),
-    ('Ебака3000', 'ПААААЕХАЛИ!!!!!!', (255, 0, 0)),
-]
+GAME_KEY = 'ZGD73-HHDT3-HHBII'
 
-donts_texts = [
-    ('donts', 'Похоже дела плохи...', (255, 0, 255)),
-    ('donts', 'Здоровье на исходе...', (255, 0, 255)),
-    ('donts', 'Одна ошибка, и ты ошиблась', (255, 0, 255)),
-    ('donts', 'Помнишь дрищару, который стал качком?', (255, 0, 255)),
-    ('donts', 'Давай я тебе помогу...', (255, 0, 255)),
-    ('donts', '...', (255, 0, 255)),
-    ('donts', 'Нужно избавить тебя от кошмаров...', (255, 0, 255)),
-    ('donts', '...', (255, 0, 255)),
-    ('donts', '.....', (255, 0, 255)),
-    ('donts', '.......', (255, 0, 255)),
-    ('donts', 'Взгляни на свои статы!', (255, 0, 255)),
-    ('donts', '...', (255, 0, 255)),
-    ('donts', 'Я буду защищать тебя', (255, 0, 255)),
-    ('бортовой компьютер', 'Щит активирован', (0, 0, 255)),
-    ('donts', 'Так будет получше :)', (255, 0, 255)),
-    ('donts', 'ПОКАЖИ ЕМУ!', (255, 0, 255)),
-]
-
-final_texts = [
-    ('donts', 'ТАК ЕГО!!!', (255, 0, 255)),
-    ('donts', '...', (255, 0, 255)),
-    ('donts', 'Было весело!', (255, 0, 255)),
-    ('donts', 'Надеюсь, тебе тоже! :)', (255, 0, 255)),
-    ('donts', 'Я долго старался...', (255, 0, 255)),
-    ('donts', 'Сделал эту игру только для ТЕБЯ! >.<', (255, 0, 255)),
-    ('donts', 'Жаль, что это приключение быстро закончилось...', (255, 0, 255)),
-    ('бортовой компьютер', 'Это потому, что, сер...', (0, 0, 255)),
-    ('бортовой компьютер', 'Кто-то не умеет делать игры и слишком ленив', (0, 0, 255)),
-    ('donts', '...', (255, 0, 255)),
-    ('donts', 'Хех, надеюсь, новое приключение тебе понравится ещё больше!', (255, 0, 255)),
-]
+texts = open('resources/text.json', encoding='utf-8')
+text_data = json.load(texts)
+texts.close()
+boss_texts = text_data['data']['boss_texts']
+donts_texts = text_data['data']['donts_texts']
+final_texts = text_data['data']['final_texts']
 
 
 def do_restart(igrok):
@@ -91,7 +64,7 @@ def spawn(chislo = None):
     global vragi, level, bosslvl
     if not bosslvl:
         for i in range(int(chislo)):
-            vragi.append(Enemy(i))
+            vragi.append(Enemy(i, int(level * e)))
     else:
         vragi.append(BossEnemy())
 
@@ -143,8 +116,8 @@ def drawwindow(score):  # прорисовка графики
 
     for item in vragi:
         if item.alive:
-            if item.health / item.hhealth > 0.3:
-                hp_color = (0, 0, 0)
+            if nitemare_text:
+                hp_color = hsv2rgb(color / 100, 1, 1)
             else:
                 hp_color = (255, 255, 255)
             item.text_hp = myfont.render(f'{item.health}', False, hp_color)
@@ -199,10 +172,10 @@ def drawwindow(score):  # прорисовка графики
         #     play_sound(len(current_text_list[current_text][1]))
         pygame.draw.rect(win, (50, 50, 50),
                          (40, win_h - 250, win_w-80, 200))
-        sayer_name = bigfont.render(f'{current_text_list[current_text][0]}', False,
-                       current_text_list[current_text][2])
-        boss_text = bigfont.render(f'{current_text_list[current_text][1]}', False,
-                       (255, 255, 255))
+        sayer_name = bigfont.render(f'{current_text_list[current_text]["sayer"]}', False,
+                       literal_eval(current_text_list[current_text]['speaker_color']))
+        boss_text = bigfont.render(f'{current_text_list[current_text]["text"]}', False,
+                       literal_eval(current_text_list[current_text]["text_color"]))
         about_text = myfont.render(f'Пробел для продолжения', False, (255, 255, 255))
         win.blit(about_text, (1000, win_h - 80))
         win.blit(sayer_name, (50, win_h - 240))
@@ -210,7 +183,7 @@ def drawwindow(score):  # прорисовка графики
 
     if show_game_key:
         pygame.draw.rect(win, (50, 50, 50),(40, win_h - 450, win_w - 80, 200))
-        help_text = myfont.render(f'Нажми 5 раз пробел, чтобы выйти', False, (255, 255, 255))
+        help_text = myfont.render(f'Нажми {5-final_exit} раз пробел, чтобы выйти', False, (255, 255, 255))
         # instuction_text = myfont.render(f'Передай этот код отправителю :)', False, (255, 255, 255))
         key_text = giantfont.render(f'{GAME_KEY}', False, hsv2rgb(key_color / 100, 1, 1))
         win.blit(key_text, (120, win_h - 440))
@@ -244,8 +217,9 @@ def boss_level():
 
 
 def defence_from_boss():
-    global paused, show_text_box, current_text, current_text_list
+    global paused, show_text_box, current_text, current_text_list, donts_defence
     show_text_box = True
+    donts_defence = True
     current_text_list = donts_texts
 
     if current_text < len(current_text_list):
@@ -307,13 +281,13 @@ if __name__ == "__main__":
                                     score += level * 2
                                 item.alive = False
                                 vragi.pop(vragi.index(item))
-                                if random.randint(0, 5) == random.randint(0, 5):
+                                if random.randint(0, 10) == random.randint(0, 10):
                                     bonusi.append(BulletBonus(item.x, item.y))
                                 elif random.randint(0, 10) == random.randint(0, 10):
                                     bonusi.append(DamageBonus(item.x, item.y))
                                 elif bosslvl:
                                     bonusi.append(DamageBonus(item.x, item.y))
-                                elif random.randint(0, 15) == random.randint(0, 15):
+                                elif random.randint(0, 5) == random.randint(0, 5):
                                     bonusi.append(HealthBonus(item.x, item.y))
                                 elif random.randint(0, 20) == random.randint(0, 20) and molodec.speed <= 2:
                                     bonusi.append(SpeedBonus(item.x, item.y))
@@ -389,7 +363,7 @@ if __name__ == "__main__":
                 if show_game_key:
                     if event.key == pygame.K_SPACE:
                         final_exit += 1
-                    if final_exit > 5:
+                    if final_exit >= 5:
                         pygame.quit()
                         sys.exit()
         for item in vragi:
@@ -411,6 +385,7 @@ if __name__ == "__main__":
                 molodec.health = 1
                 defence_from_boss()
 
+        if donts_defence:
             if current_text == 5:
                 nitemare_text = False
             if current_text == 8:
@@ -423,20 +398,23 @@ if __name__ == "__main__":
                 shieled_obj.speed = 2
 
 
-            if not vragi and not is_final:
-                is_final = True
-                current_text = 0
+        if donts_defence and not vragi and not is_final:
+            is_final = True
+            current_text = 0
 
-                final_level()
+            final_level()
 
-            if current_text >= len(current_text_list):
-                show_text_box = False
-                paused = False
+        if current_text >= len(current_text_list):
+            show_text_box = False
+            paused = False
 
-                if is_final:
-                    show_game_key = True
+            if is_final:
+                show_game_key = True
 
         drawwindow(score)
 
     pygame.quit()
     sys.exit()
+
+
+#  pyinstaller mygame.spec
