@@ -2,7 +2,7 @@ import pygameMenu
 
 from init import *
 
-volume = 30
+volume = 10
 
 
 def dead(score):
@@ -14,8 +14,8 @@ def dead(score):
     def Pass():
         pass
 
-    font1 = 'sprites/bebas.ttf'
-    font2 = 'sprites/8bit.ttf'
+    font1 = 'resources/bebas.ttf'
+    font2 = 'resources/8bit.ttf'
 
     dead_menu = pygameMenu.TextMenu(surface=win, bgfun=Pass,
                                     color_selected=COLOR_WHITE,
@@ -51,8 +51,8 @@ def pause():
     def Pass():
         pass
 
-    font1 = 'sprites/bebas.ttf'
-    font2 = 'sprites/8bit.ttf'
+    font1 = 'resources/bebas.ttf'
+    font2 = 'resources/8bit.ttf'
     about_menu = pygameMenu.TextMenu(surface=win, bgfun=Pass,
                                      color_selected=COLOR_WHITE,
                                      font=font1,
@@ -75,7 +75,7 @@ def pause():
                                      )
 
     about_menu.add_line('Donts\'s     Space        Invaders')
-    about_menu.add_line(r'2020   \\ Donts_')
+    about_menu.add_line(r'2020-2023   \\ Donts_')
     about_menu.add_line(pygameMenu.locals.TEXT_NEWLINE)
     about_menu.add_option('Return to menu', pygameMenu.events.BACK)
     main_menu = pygameMenu.Menu(surface=win, bgfun=Pass,
@@ -125,7 +125,7 @@ def pause():
                                      )
     help_menu.add_line("[A]+[D]  or  [Arrows]  to  walk")
     help_menu.add_line("[E]  to  fire")
-    help_menu.add_line("[F]  to  restart")
+    help_menu.add_line("[F]  to  restart  (it's  buggy)")
 
     help_menu.add_option('Return to menu', pygameMenu.events.BACK)
     main_menu.add_option('Play', main_menu.disable)
