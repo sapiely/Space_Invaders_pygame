@@ -19,14 +19,14 @@ class Achievement:
     wight = 500
     height = 50
     speed = 0.25
-    life_time_limit = 10  # seconds
     text = ''
     is_alive = True
 
 
-    def __init__(self, x, y, text):
+    def __init__(self, x, y, text, life_time=10):
         pygame.mixer.Channel(0).play(
             pygame.mixer.Sound('resources/achievement.mp3'))
+        self.life_time_limit = life_time
         self.delete_in = datetime.datetime.now() + timedelta(seconds=self.life_time_limit)
         self.x = x
         self.y = y

@@ -283,12 +283,12 @@ if __name__ == "__main__":
                 else:
                     achievement_created = True
                     achievement = Achievement(win_w, win_h,
-                                              f'Пройти игру! И быть солнышком)')
+                                              f'Пройти игру! И быть солнышком)', 20)
             try:
                 if achievement and achievement.is_alive:
                     achievement.move(win_h)
                 else:
-                    if not final_exit:
+                    if not is_final:
                         achievement_created = False
                         del achievement
             except:

@@ -1,5 +1,3 @@
-from typing import Callable, Iterator
-
 import pygame
 
 import init
