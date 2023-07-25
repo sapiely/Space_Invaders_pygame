@@ -196,7 +196,11 @@ class Bonus(Entity):
 
     def move(self, igrok):
         self.y += self.speed
-        if igrok.x < self.x < igrok.x + igrok.wight and igrok.y < self.y < igrok.y + igrok.height:
+        if (((igrok.x < self.x < igrok.x + igrok.wight)
+                or (igrok.x < self.size_x < igrok.x + igrok.wight))
+                and ((igrok.y < self.y < igrok.y + igrok.height)
+                or (igrok.y < self.size_y < igrok.y + igrok.height))
+        ):
             self.alive = False
             self.check(igrok)
 

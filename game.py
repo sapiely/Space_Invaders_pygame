@@ -88,8 +88,9 @@ def drawwindow(score):  # прорисовка графики
 
     text_lvl = bigfont.render(f'level: {level}  score: {score}', False, output_color)
     health_text = bigfont.render(f'Health: {molodec.health}', False, (255, 0, 0) if not nitemare_text else output_color)
-    stats_text = bigfont.render(f'bullets: {molodec.bullet_count}   dmg:{molodec.dmg}'
-        f'   speed: {molodec.speed}', False, output_color)
+    bullet_count_text = bigfont.render(f'bullets: {molodec.bullet_count}', False,  (0, 0, 255) if not nitemare_text else output_color)
+    dmg_text = bigfont.render(f'dmg:{molodec.dmg}', False, (255, 0, 180) if not nitemare_text else output_color)
+    speed_text = bigfont.render(f'speed: {molodec.speed}', False, (0, 255, 0) if not nitemare_text else output_color)
     if not nitemare_text:
         text_name = bigfont.render(r"DDontS's Space Invaders", False, (255,0,255))
     else:
@@ -169,10 +170,12 @@ def drawwindow(score):  # прорисовка графики
     win.blit(textsurface, (win_w / 2, 300))
     win.blit(textsurface_timer, (win_w / 2, 350))
     win.blit(text_lvl, (5, 0))
-    win.blit(health_text, (300, 0))
-    win.blit(stats_text, (500, 0))
+    win.blit(health_text, (270, 0))
+    win.blit(bullet_count_text, (470, 0))
+    win.blit(dmg_text, (660, 0))
+    win.blit(speed_text, (820, 0))
     win.blit(text_score, (160, 0))
-    win.blit(text_name, (win_w - 410, 0))
+    win.blit(text_name, (win_w - 370, 0))
 
     if current_text_list and show_text_box and current_text < len(current_text_list):
         pygame.draw.rect(win, (50, 50, 50),
@@ -272,7 +275,7 @@ if __name__ == "__main__":
                     for item in vragi:
                         if item.x < bullet.x < (item.x + item.wight) \
                                 and item.y < bullet.y < (item.y + item.height):
-                            item.health -= molodec.dmg * molodec.bullet_count
+                            item.health -= molodec.dmg
                             if item.health <= 0:
                                 if item.type == "Enemy":
                                     score += level
@@ -355,16 +358,15 @@ if __name__ == "__main__":
                     level += 1
                 elif event.key == pygame.K_m:
                     switch_music()
-                elif event.type == pygame.QUIT:
-                    run = False
                 if bosslvl and event.key == pygame.K_SPACE:
                     current_text += 1
                 if show_game_key:
                     if event.key == pygame.K_SPACE:
                         final_exit += 1
                     if final_exit >= 5:
-                        pygame.quit()
-                        sys.exit()
+                        run = False
+            elif event.type == pygame.WINDOWCLOSE:
+                run = False
         for item in vragi:
             if molodec.health <= 0 and not bosslvl:
                 vragi.clear()
@@ -390,7 +392,7 @@ if __name__ == "__main__":
             if current_text == 8:
                 molodec.health = 1000
                 molodec.bullet_count = 100
-                molodec.dmg = 100
+                molodec.dmg = 10000
                 molodec.speed = 2
             if current_text == 13:
                 shieled_obj = Shield(molodec)
