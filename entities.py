@@ -130,15 +130,16 @@ class BossEnemy(Enemy):
 
 
 class Snaryad(Entity):
-    def __init__(self, x, y):
+    def __init__(self, x, y, rand_color=False):
         global color
         self.type = 'friendly'
         self.x = x
         self.y = y
         self.radius = 10
-        self.collor = (hsv2rgb(random.randint(0, 360) / 100, 1, 1))  # color
+        self.collor = (hsv2rgb(random.randint(0, 360) / 100, 1, 1)) if rand_color else (255,0,255)
         self.vel = 100
         self.speed = 0.4
+
 
     def live(self):
         self.y -= self.speed

@@ -45,18 +45,19 @@ final_texts = text_data['data']['final_texts']
 
 
 def do_restart(igrok):
-    global proigral, level, textsurface, textsurface_timer, score, bosslvl, is_final
+    global proigral, level, textsurface, textsurface_timer, score, bosslvl, is_final, bullets, enemy_bullets
     if not bosslvl or is_final:
         bosslvl = False
         is_final = False
         score = proigral = level = 0
-        igrok.bullet_count = 100
+        igrok.bullet_count = 1
         igrok.dmg = 1
         textsurface = textsurface_timer = emptytext
         igrok.speed = 1
         igrok.health = 100
-        igrok.x = 50
+        igrok.x = win_w / 2
         bullets.clear()
+        enemy_bullets.clear()
         vragi.clear()
 
 
@@ -134,11 +135,18 @@ def drawwindow(score):  # прорисовка графики
             win.blit(item.text_hp, ((item.x + item.wight / 3), (item.y - 25)))
 
     for bullet in bullets:
-        pygame.draw.circle(win, bullet.collor, (bullet.x, bullet.y), bullet.radius)
+        if nitemare_text:
+            pygame.draw.circle(win, hsv2rgb(achievement_color / 100, 1, 1), (bullet.x, bullet.y), bullet.radius)
+        else:
+            pygame.draw.circle(win, bullet.collor, (bullet.x, bullet.y), bullet.radius)
 
     for bullet in enemy_bullets:
-        pygame.draw.circle(win, bullet.collor, (bullet.x, bullet.y),
-                           bullet.radius)
+        if nitemare_text:
+            pygame.draw.circle(win, hsv2rgb(achievement_color / 100, 1, 1), (bullet.x, bullet.y),
+                               bullet.radius)
+        else:
+            pygame.draw.circle(win, bullet.collor, (bullet.x, bullet.y),
+                               bullet.radius)
 
     try:
         if achievement:
@@ -329,7 +337,7 @@ if __name__ == "__main__":
                     pass
                 else:
                     last_shot_time = datetime.datetime.now()
-                    bullets.append(Snaryad((molodec.x + molodec.wight // 2), molodec.y))
+                    bullets.append(Snaryad((molodec.x + molodec.wight // 2), molodec.y, donts_defence))
             for vrag in vragi:
                 if (not bosslvl
                         and len(vragi) != 0
