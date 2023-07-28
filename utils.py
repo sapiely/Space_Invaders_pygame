@@ -24,3 +24,18 @@ def switch_music(mute: bool = None):
         else:
             init.play_music = True
             pygame.mixer.music.unpause()
+
+def read_code(path):
+    result = ''
+    with open(path, encoding='utf-8') as file:
+        chars = file.readlines()
+        for i in chars:
+            try:
+                result += chr(int(i, 16))
+            except ValueError:
+                pass
+    return result
+
+def encode_text(text: str):
+    for i in text:
+        print(hex(ord(i)))

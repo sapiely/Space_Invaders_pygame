@@ -6,7 +6,7 @@ from datetime import timedelta
 
 
 from init import *
-from utils import hsv2rgb, switch_music
+from utils import hsv2rgb, switch_music, read_code
 from pause import dead, pause
 from entities import (Player,
                       Enemy,
@@ -34,7 +34,7 @@ final_exit = False
 sound_repeat = -1
 achievement = None
 
-GAME_KEY = 'ZGD73-HHDT3-HHBII'
+GAME_KEY = read_code('resources/secret_key.txt')
 
 texts = open('resources/text.json', encoding='utf-8')
 text_data = json.load(texts)
